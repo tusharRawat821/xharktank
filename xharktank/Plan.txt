@@ -1,0 +1,65 @@
+1. Setup STS
+2. Install and setup MongoDB : 4.2.19
+3. Test MongoDb connection from application code
+4. dependencies : spring-web + spring-mongodb + java 11 + gradle build system. : spring-starter project.
+
+
+Test Endpoint : post a pitch.
+
+	task 1. 
+	Success case :
+	
+	 POST /pitches :
+		body : 
+			'{
+				"entrepreneur": "Ashok kumar",
+				"pitchTitle" : "Crio.Do - Work-experience based learning programs for developers",
+				"pitchIdea" : "Build professional projects like the top 1% developers. 
+								Master the latest full stack and backend tech with real work-ex. 
+								Crack developer jobs at the best tech companies.",
+				"askAmount": 10000000.25,
+				"equity" : 12.5
+			}'
+		response : Created (201 status code)
+			{"id": "1"}
+			
+			Steps:
+				1. Save and return the id. : Find the method.
+				2. Response structure.
+				3. Response codes.
+		
+		Completed.
+				
+	task 2. 
+	Failure case : Validation + Exception handling.
+		Controller layer bean validations not mongoDB Validations.
+		Data validation error: Wrong values Empty key values OR Not able to parse OR missing data :key not present. 
+		
+		response : Invalid Request Body (400 status code).
+		
+		
+		Failure Cases: Invalid Request Body (400 status code).
+			
+			: MethodArgumentNotValidException : null or empty values or invalid values (equity > 100%)
+			: JsonProcessingException : Request : empty body = {}, {extrafieldName/naming doesn't matching}, 
+			
+			Make a consitent Model for ErrorResponse :
+				{timestamp : "", errorMessage : "", status : ""}
+		
+Test Endpoint 2 : POST /pitches/<pitchId>/makeOffer
+
+		'{
+		"investor": "Anupam Mittal",
+		"amount" : 10000000.56,
+		"equity" : 20.2,
+		"comment": "A new concept in the ed-tech market. I can relate with the importance of the Learn By Doing philosophy. Keep up the Good Work! Definitely interested to work with you to scale the vision of the company!"
+		}'
+			
+			response : Created (201 status code)
+			{"id": "1"}
+			
+		Failure Case :
+			1. Equity > 100 %
+			2. 404 Not Found : pitchId not present.
+			3. offer body : {}
+	
